@@ -4,55 +4,33 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public Image hpBar;
-    public Image mpBar;
-    public Image expBar;
-    public TextMeshProUGUI goldText;
-    public TextMeshProUGUI stageText;
+    public Image HpBar;
 
-    private int maxHP = 100;
-    private int currentHP = 100;
-    private int maxMP = 50;
-    private int currentMP = 50;
-    private int maxExp = 100;
-    private int currentExp = 0;
-    private int gold = 0;
-    private int stage = 1;
+    [SerializeField]
+    private HealthManagerSO HealthManagerSO;
 
-    void Start()
+    private void Start()
     {
-        UpdateUI();
+        ChangeSliderValue(HealthManagerSO.health);
     }
 
-    void UpdateUI()
+    private void OnEnable()
     {
-        hpBar.fillAmount = (float)currentHP / maxHP;
-        mpBar.fillAmount = (float)currentMP / maxMP;
-        expBar.fillAmount = (float)currentExp / maxExp;
+        HealthManagerSO.healthChangeEvent.AddListener(ChangeSliderValue);
     }
 
-    public void TakeDamage(int damage)
+    private void OnDisable()
     {
-        currentHP -= damage;
-        if (currentHP < 0) currentHP = 0;
-        UpdateUI();
+        HealthManagerSO.healthChangeEvent.RemoveListener(ChangeSliderValue);
     }
 
-    public void UseMana(int amount)
+    private void ChangeSliderValue(int amount)
     {
-        currentMP -= amount;
-        if (currentMP < 0) currentMP = 0;
-        UpdateUI();
+        HpBar.fillAmount = ConvertIntoFloat(amount);
     }
 
-    public void GainExp(int amount)
+    private float ConvertIntoFloat(int amount)
     {
-        currentExp += amount;
-        if (currentExp >= maxExp)
-        {
-            currentExp = 0;
-            stage++; // 레벨업 또는 스테이지 증가
-        }
-        UpdateUI();
+        return (float)amount / 100;
     }
 }
