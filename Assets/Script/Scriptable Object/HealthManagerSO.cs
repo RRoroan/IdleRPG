@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "NewHealthManager", menuName = "HealthManager/SO")]
+[CreateAssetMenu(fileName = "NewHM", menuName = "Scriptable Object/Health Manager")]
 public class HealthManagerSO : ScriptableObject
 {
     public int health = 100;
